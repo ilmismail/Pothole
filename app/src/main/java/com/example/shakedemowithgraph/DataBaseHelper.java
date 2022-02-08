@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +15,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_POTHOLE_ACCEL = "POTHOLE_ACCEL";
 //    public static final String COLUMN_POTHOLE_DETECT = "POTHOLE_DETECT";
     public static final String COLUMN_POTHOLE_TIMESTAMP = "POTHOLE_TIMESTAMP";
+//    public static final String COLUMN_LOCATION = "LOCATION";
     public static final String COLUMN_LATITUDE = "LATITUDE";
     public static final String COLUMN_LONGITUDE = "LONGITUDE";
 
@@ -21,7 +23,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static DataBaseHelper mInstance;
 
     public DataBaseHelper(@Nullable Context context) {
-        super(context, "pothole.db", null, 1);
+        super(context, "potholedetect.db", null, 1);
 
     }
 
@@ -51,7 +53,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insert(float changeInAcceleration, double latitude, double longitude) {
+    public void insert(float changeInAcceleration, String latitude, String longitude) {
 
         ContentValues cv = new ContentValues();
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "929568661525",
+    "firebase_url": "https://pothole-22148-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pothole-22148",
+    "storage_bucket": "pothole-22148.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929568661525:android:f3a10e1271915818146e1c",
+        "android_client_info": {
+          "package_name": "com.example.shakedemowithgraph"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929568661525-iiqg6jcrtdohtpgmf1bp4meqhv6h0lat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3ks-qHRDCZXb3LO8tWh7aRe5qouQmB48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929568661525-iiqg6jcrtdohtpgmf1bp4meqhv6h0lat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 //import androidx.room.Room;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -16,6 +17,9 @@ import android.location.Location;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +29,16 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int FAST_UPDATE_INTERVAL = 5;
     private static final int PERMISSION_FINE_LOCATION = 99;
     TextView txtLng, txtLat, txt_acceleration;
+    Button btn_showMap;
 
     //define the sensor variables
     private SensorManager mSensorManager;
@@ -59,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Location lastLocation;
     DataBaseHelper dataBaseHelper;
+
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference root = db.getReference("pothole");
 
     private float[] mAccelerometerData = new float[3];
     private float[] mMagnetometerData = new float[3];
@@ -115,10 +128,9 @@ public class MainActivity extends AppCompatActivity {
             double geometryAz = rotation[6] * sensorEvent.values[0] + rotation[7] * sensorEvent.values[1] + rotation[8] * sensorEvent.values[2];
 
 
+            double az = geometryAz;
 //            double ay = geometryAy * Math.cos(teta1) - geometryAx * Math.sin(teta1);
 //            double ax = geometryAy * Math.sin(teta1) + geometryAx * Math.cos(teta1);
-            double az = geometryAz;
-
 //            accelerationCurrentValue = (float) (az);
             double changeInAcceleration = (float) (az);
 //            accelerationPreviousValue = accelerationCurrentValue;
@@ -128,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
 //            txt_prevAccel.setText("Prev = " + (int)accelerationPreviousValue);
             txt_acceleration.setText("Acceleration change = " + changeInAcceleration);
 
+
 //            long actualTime = System.currentTimeMillis();
 
 
             if (changeInAcceleration <= threshold) {
-
 //                if (actualTime - lastUpdate < 200){
 //                    return;
 //                }
@@ -143,8 +155,30 @@ public class MainActivity extends AppCompatActivity {
                 MyApplication myApplication = (MyApplication) getApplicationContext();
                 savedLocation = myApplication.getMyLocations();
                 savedLocation.add(currentLocation);
-//                dataBaseHelper.insert((float) changeInAcceleration);
 
+                String lat = null;
+                String lng = null;
+                if (currentLocation != null) {
+                    lat = Double.toString(currentLocation.getLatitude());
+                    lng = Double.toString(currentLocation.getLongitude());
+                }
+
+                dataBaseHelper.insert((float) changeInAcceleration, lat, lng);
+
+                String accel = Float.toString((float) changeInAcceleration);
+                Date date = new Date();
+                SimpleDateFormat DateFor = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                String stringDate= DateFor.format(date);
+
+                HashMap<String, String> potholeMap = new HashMap<>();
+
+                potholeMap.put("Accel", accel);
+                potholeMap.put("Latitude", lat);
+                potholeMap.put("Longitude", lng);
+                potholeMap.put("Timestamp", java.text.DateFormat.getDateTimeInstance().format(date));
+                root.child(stringDate).setValue(potholeMap);
+
+                Log.d("test", potholeMap.toString());
             }
             else {
                 txt_acceleration.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -176,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         txt_acceleration = findViewById(R.id.txt_accel);
         txtLat = findViewById(R.id.txtLatValues);
         txtLng = findViewById(R.id.txtLngValues);
+        btn_showMap = findViewById(R.id.btnMaps);
 
 
         //db
@@ -213,6 +248,14 @@ public class MainActivity extends AppCompatActivity {
                 updateValues(locationResult.getLastLocation());
             }
         };
+
+        btn_showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(i);
+            }
+        });
 
 
 
