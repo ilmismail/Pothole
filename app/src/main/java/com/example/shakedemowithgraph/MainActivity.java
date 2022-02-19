@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private Sensor mAccelerometer;
     private Sensor mMagneticField;
     private Sensor mGravity;
-    private long lastUpdate;
 
 
     //request location
