@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int DEFAULT_UPDATE_INTERVAL = 30;
     private static final int FAST_UPDATE_INTERVAL = 5;
     private static final int PERMISSION_FINE_LOCATION = 99;
-    TextView txtLng, txtLat, txt_acceleration;
+    TextView txtLng, txtLat, txt_acceleration, txtSpeed;
     Button btn_showMap;
 
     //define the sensor variables
@@ -79,10 +79,11 @@ public class MainActivity extends AppCompatActivity {
     float[] rotation = new float[9];
     float[] inclination = new float[9];
 
+    private int threshold = 0;
+
     private int pointsPlotted = 5;
     private int graphIntervalCounter = 0;
 
-    private int threshold = 0;
 
     private Viewport viewport;
 
@@ -128,26 +129,14 @@ public class MainActivity extends AppCompatActivity {
 
 
             double az = geometryAz;
-//            double ay = geometryAy * Math.cos(teta1) - geometryAx * Math.sin(teta1);
-//            double ax = geometryAy * Math.sin(teta1) + geometryAx * Math.cos(teta1);
-//            accelerationCurrentValue = (float) (az);
+
             double changeInAcceleration = (float) (az);
-//            accelerationPreviousValue = accelerationCurrentValue;
+
 
             //update text views
-//            txt_currentAccel.setText("Current = " + (int)accelerationCurrentValue);
-//            txt_prevAccel.setText("Prev = " + (int)accelerationPreviousValue);
             txt_acceleration.setText("Acceleration change = " + changeInAcceleration);
 
-
-//            long actualTime = System.currentTimeMillis();
-
-
             if (changeInAcceleration <= threshold) {
-//                if (actualTime - lastUpdate < 200){
-//                    return;
-//                }
-//                lastUpdate = actualTime;
                 Toast.makeText(MainActivity.this, "Pothole Detected", Toast.LENGTH_SHORT).show();
                 txt_acceleration.setBackgroundColor(Color.parseColor("#fcad03"));
                 startLocUpdates();
@@ -209,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
         txt_acceleration = findViewById(R.id.txt_accel);
         txtLat = findViewById(R.id.txtLatValues);
         txtLng = findViewById(R.id.txtLngValues);
+        txtSpeed = findViewById(R.id.txtSpeedValues);
         btn_showMap = findViewById(R.id.btnMaps);
 
 
@@ -318,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
 //        double lng = location.getLongitude();
         txtLat.setText(String.valueOf(location.getLatitude()));
         txtLng.setText(String.valueOf(location.getLongitude()));
-
+        txtSpeed.setText(String.valueOf(location.getSpeed()));
     }
 
 

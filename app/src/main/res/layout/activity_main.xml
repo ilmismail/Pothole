@@ -62,6 +62,29 @@
         app:layout_constraintStart_toEndOf="@+id/txtLng"
         app:layout_constraintTop_toBottomOf="@+id/txtLatValues" />
 
+    <TextView
+        android:id="@+id/txtSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Speed: "
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLng" />
+
+    <TextView
+        android:id="@+id/txtSpeedValues"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="0.0 "
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/txtLat"
+        app:layout_constraintTop_toBottomOf="@+id/txtLngValues" />
+
+
     <Button
         android:id="@+id/btnMaps"
         android:layout_width="wrap_content"
@@ -69,7 +92,7 @@
         android:text="SHOW MAPS"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/txtLngValues"
+        app:layout_constraintBottom_toBottomOf="@+id/txtSpeedValues"
         app:layout_constraintTop_toTopOf="@+id/graph" />
 
     <com.jjoe64.graphview.GraphView
